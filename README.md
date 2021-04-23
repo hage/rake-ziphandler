@@ -1,8 +1,19 @@
 # RakeZiphandler
 
-Welcome to your new gem! In this directory, you'll find the files you need to be able to package up your Ruby library into a gem. Put your Ruby code in the file `lib/rake_ziphandler`. To experiment with that code, run `bin/console` for an interactive prompt.
+Rakeによるzipの生成、受け渡し等の一連のタスクを定義する gem である。
 
-TODO: Delete this and the text above, and describe your gem
+* zipの生成
+* zipの世代管理
+* zipのアップロードとその世代管理
+* zip生成前に行うタスクの指定
+
+などの機能がある。
+
+このクラスをnewすると指定されたネームスペース(デフォルトはzip)にmake, sweep, deployターゲットが定義される。つまり`rake zip:make`等のタスクが定義される。
+
+* make: zipファイルを作る
+* sweep: 古いzipファイルを消す。残すのは最新nremains個(デフォルト2)である
+* deploy: remote_pathとzipdirの内容を同期する
 
 ## Installation
 
@@ -22,7 +33,20 @@ Or install it yourself as:
 
 ## Usage
 
-TODO: Write usage instructions here
+```ruby:Rakefile
+ZipHandler.new(
+  prefix:       # zipファイル名の先頭固定部分 (*)
+  content:      # zipに入れる内容 (*)
+  zipdir:       # zipを作成するディレクトリ (*)
+  remote_path:  # 同期先のパス (rsync形式)  (*)
+  zipopt:       # zip生成時につけるオプション (`-x .DS_Store -r`)
+  nremains:     # 古いzipを残す数 (`2`)
+  depend_on:    # makeが依存するタスクを指定 -- sweep_macbinary等を想定 (`[]`)
+  after_deploy: # deploy後に実行するブロック。ブロックにはselfを渡す。(`->(_self){}`)
+  namespace:    # タスクのネームスペース (`:zip`)
+)
+```
+`(*)`は必須のオプションである。そうでないものはカッコ内にデフォルト値を記してある。
 
 ## Development
 
