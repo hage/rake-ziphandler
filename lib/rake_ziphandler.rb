@@ -19,7 +19,8 @@ class RakeZipHandler
                  zipopt: '-x .DS_Store -r',
                  nremains: 2,
                  depend_on: [],
-                 after_deploy: ->(_self) {})
+                 after_deploy: ->(_self) {},
+                 echo: true)
     @prefix = prefix
     @content = content
     @zipdir = zipdir
@@ -29,6 +30,7 @@ class RakeZipHandler
     @nremains = nremains
     @depend_on = depend_on
     @after_deploy = after_deploy
+    @echo = echo
 
     @zipname = Time.now.strftime("#{@prefix}-%y%m%d-%H%M.zip")
     @zippath = File.join(@zipdir, @zipname)
@@ -47,8 +49,14 @@ class RakeZipHandler
 
   private
 
+  def mysh(line)
+    sh line, verbose: @echo
+  end
+
   def define_task
     extend Rake::DSL
+
+    zip = "zip#{@echo ? '' : ' -q'}"
 
     namespace @namespace do
       directory @zipdir
@@ -58,8 +66,8 @@ class RakeZipHandler
         srcdir = File.dirname(@content)
         impdir = File.basename(@content)
         Dir.chdir(srcdir) do
-          cmd = "zip #{@zipopt} #{@zippath} #{impdir}"
-          sh cmd
+          cmd = "#{zip} #{@zipopt} #{@zippath} #{impdir}"
+          mysh cmd
         end
       end
 
@@ -72,12 +80,12 @@ class RakeZipHandler
 
       desc "sync zip files with remote directory"
       task deploy: [] do
-        sh "rm -f #{@zipdir}/.DS_Store"
-        sh "rsync -av --delete #{@zipdir}/ #{@remote_path}"
+        mysh "rm -f #{@zipdir}/.DS_Store"
+        mysh "rsync -av --delete #{@zipdir}/ #{@remote_path}"
         @after_deploy.call(self)
       end
 
-      desc "zip deploy suite -- sweep -> make -> deploy"
+      desc "#{zip} deploy suite -- sweep -> make -> deploy"
       task deploy_suite: ["#{@namespace}:sweep", "#{@namespace}:make", "#{@namespace}:deploy"]
     end
   end

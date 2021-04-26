@@ -16,7 +16,7 @@ module RakeZipHandlerTest
     system("mkdir -p #{testdir} ; echo hello > #{testdir}/test.txt")
     FileUtils.mkdir_p(zipdir)
 
-    _z = RakeZipHandler.new(prefix: prefix, content: testdir, zipdir: zipdir, remote_path: '', depend_on: [:foo])
+    _z = RakeZipHandler.new(prefix: prefix, content: testdir, zipdir: zipdir, remote_path: '', depend_on: [:foo], echo: false)
 
     # test sweep
     FileUtils.touch "#{zipdir}/#{prefix}-200101-1212.zip"
