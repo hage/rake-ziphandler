@@ -1,0 +1,16 @@
+inherit_from: .rubocop_todo.yml
+
+Style/AsciiComments:
+  Enabled: false
+Style/TrailingCommaInHashLiteral:
+  Enabled: false
+Style/Documentation:
+  Enabled: false
+Layout/HashAlignment:
+  Enabled: false
+Layout/ExtraSpacing:
+  Enabled: false
+Layout/SpaceInsideHashLiteralBraces:
+  EnforcedStyle: no_space
+Layout/SpaceInsideBlockBraces:
+  Enabled: false
