@@ -44,6 +44,7 @@ ZipHandler.new(
   depend_on:    # makeが依存するタスクを指定 -- sweep_macbinary等を想定 (`[]`)
   after_deploy: # deploy後に実行するブロック。ブロックにはselfを渡す。(`->(_self){}`)
   namespace:    # タスクのネームスペース (`:zip`)
+  echo:         # コマンドラインをエコーするとき (`true`)
 )
 ```
 `(*)`は必須のオプションである。そうでないものはカッコ内にデフォルト値を記してある。

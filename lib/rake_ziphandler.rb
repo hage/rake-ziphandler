@@ -10,7 +10,9 @@ class RakeZipHandler
   #  zipopt: zip生成時につけるオプション (`-x .DS_Store -r`)
   #  nremains: 古いzipを残す数 (`2`)
   #  depend_on: makeが依存するタスクを指定 -- sweep_macbinary等を想定 (`[]`)
-  #  after_deploy: deploy後に実行するコード。selfを渡す。
+  #  after_deploy: deploy後に実行するブロック。ブロックにはselfを渡す。(`->(_self){}`)
+  #  namespace: タスクのネームスペース (`:zip`)
+  #  echo: コマンドラインをエコーするとき (`true`)
   def initialize(prefix:,
                  content:,
                  zipdir:,
