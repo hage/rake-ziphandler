@@ -15,6 +15,9 @@ Rakeによるzipの生成、受け渡し等の一連のタスクを定義する 
 * sweep: 古いzipファイルを消す。残すのは最新nremains個(デフォルト2)である
 * deploy: remote_pathとzipdirの内容を同期する
 
+同期にはrsyncを子プロセスで起動している。なのでrsyncが `PATH` 上に存在している必要がある。
+このときrsyncにはオプションとして `-av --delete` を渡している。
+
 ## Installation
 
 Add this line to your application's Gemfile:
