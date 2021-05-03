@@ -23,7 +23,7 @@ Rakeによるzipの生成、受け渡し等の一連のタスクを定義する 
 Add this line to your application's Gemfile:
 
 ```ruby
-gem 'rake_ziphandler'
+gem 'rake_ziphandler', github: 'hage/rake_ziphandler', branch: 'main'
 ```
 
 And then execute:
@@ -37,6 +37,9 @@ Or install it yourself as:
 ## Usage
 
 ```ruby:Rakefile
+require 'bundler/setup'
+require 'rake_ziphandler'
+
 RakeZipHandler.new(
   prefix:       # zipファイル名の先頭固定部分 (*)
   content:      # zipに入れる内容 (*)
