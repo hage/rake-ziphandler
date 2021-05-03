@@ -37,7 +37,7 @@ Or install it yourself as:
 ## Usage
 
 ```ruby:Rakefile
-ZipHandler.new(
+RakeZipHandler.new(
   prefix:       # zipファイル名の先頭固定部分 (*)
   content:      # zipに入れる内容 (*)
   zipdir:       # zipを作成するディレクトリ (*)
