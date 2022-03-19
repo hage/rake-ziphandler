@@ -49,6 +49,7 @@ RakeZipHandler.new(
   nremains:     # 古いzipを残す数 (`2`)
   depend_on:    # makeが依存するタスクを指定 -- sweep_macbinary等を想定 (`[]`)
   after_deploy: # deploy後に実行するブロック。ブロックにはselfを渡す。(`->(_self){}`)
+  after_make:   # make後に実行するブロック。ブロックにはselfを渡す。(`->(_self){}`)
   namespace:    # タスクのネームスペース (`:zip`)
   echo:         # コマンドラインをエコーするとき (`true`)
   verbose:      # 詳しく作業状況を表示する (`false`)

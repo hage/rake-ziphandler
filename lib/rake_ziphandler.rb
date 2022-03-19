@@ -11,6 +11,7 @@ class RakeZipHandler
   #  nremains: 古いzipを残す数 (`2`)
   #  depend_on: makeが依存するタスクを指定 -- sweep_macbinary等を想定 (`[]`)
   #  after_deploy: deploy後に実行するブロック。ブロックにはselfを渡す。(`->(_self){}`)
+  #  after_make: make後に実行するブロック。ブロックにはselfを渡す。(`->(_self){}`)
   #  namespace: タスクのネームスペース (`:zip`)
   #  echo: コマンドラインをエコーするとき (`true`)
   #  verbose: 詳しく作業状況を表示する (`false`)
@@ -23,6 +24,7 @@ class RakeZipHandler
                  nremains: 2,
                  depend_on: [],
                  after_deploy: ->(_self) {},
+                 after_make: ->(_self) {},
                  echo: true,
                  verbose: false)
     @prefix = prefix
@@ -34,6 +36,7 @@ class RakeZipHandler
     @nremains = nremains
     @depend_on = depend_on
     @after_deploy = after_deploy
+    @after_make = after_make
     @echo = echo
     @verbose = verbose
 
@@ -80,6 +83,7 @@ class RakeZipHandler
           cmd = "#{zip} #{@zipopt} #{@zippath} #{impdir}"
           mysh cmd
         end
+        @after_make.call(self)
       end
 
       desc "sweep old zip files"
