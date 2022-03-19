@@ -13,6 +13,7 @@ class RakeZipHandler
   #  after_deploy: deploy後に実行するブロック。ブロックにはselfを渡す。(`->(_self){}`)
   #  namespace: タスクのネームスペース (`:zip`)
   #  echo: コマンドラインをエコーするとき (`true`)
+  #  verbose: 詳しく作業状況を表示する (`false`)
   def initialize(prefix:,
                  content:,
                  zipdir:,
@@ -22,7 +23,8 @@ class RakeZipHandler
                  nremains: 2,
                  depend_on: [],
                  after_deploy: ->(_self) {},
-                 echo: true)
+                 echo: true,
+                 verbose: false)
     @prefix = prefix
     @content = content
     @zipdir = zipdir
@@ -33,6 +35,7 @@ class RakeZipHandler
     @depend_on = depend_on
     @after_deploy = after_deploy
     @echo = echo
+    @verbose = verbose
 
     @zipname = Time.now.strftime("#{@prefix}-%y%m%d-%H%M.zip")
     @zippath = File.join(@zipdir, @zipname)
@@ -51,6 +54,10 @@ class RakeZipHandler
 
   private
 
+  def verbose_puts(s)
+    puts(*s) if @verbose
+  end
+
   def mysh(line)
     sh line, verbose: @echo
   end
@@ -67,7 +74,9 @@ class RakeZipHandler
       task make: [*@depend_on, @zipdir] do
         srcdir = File.dirname(@content)
         impdir = File.basename(@content)
+        verbose_puts("chdir #{srcdir}")
         Dir.chdir(srcdir) do
+          verbose_puts("pwd: #{Dir.pwd}")
           cmd = "#{zip} #{@zipopt} #{@zippath} #{impdir}"
           mysh cmd
         end

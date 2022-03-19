@@ -51,6 +51,7 @@ RakeZipHandler.new(
   after_deploy: # deploy後に実行するブロック。ブロックにはselfを渡す。(`->(_self){}`)
   namespace:    # タスクのネームスペース (`:zip`)
   echo:         # コマンドラインをエコーするとき (`true`)
+  verbose:      # 詳しく作業状況を表示する (`false`)
 )
 ```
 `(*)`は必須のオプションである。そうでないものはカッコ内にデフォルト値を記してある。
